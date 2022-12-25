@@ -100,7 +100,7 @@ func TestDecode(t *testing.T) {
 	}
 	for _, tC := range testCases {
 		t.Run(tC.desc, func(t *testing.T) {
-			rslt, err := decode(tC.args.buf, tC.args.t)
+			rslt, err := transfer(tC.args.buf, tC.args.t)
 			assert.Equal(t, tC.exp.rslt, rslt)
 			assert.Equal(t, tC.exp.err, err)
 		})
