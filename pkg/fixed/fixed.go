@@ -18,7 +18,7 @@ func Unmarshal(buf []byte, v interface{}, t transform.Transformer) (interface{},
 			return nil, err
 		}
 		field := rv.Elem().Field(i)
-		field.SetString(string(col))
+		setVal(field, col)
 	}
 	return v, nil
 }
@@ -55,4 +55,26 @@ func parseFixedTag(field reflect.StructField) (int, int) {
 		panic(err)
 	}
 	return begin, end
+}
+
+// TODO:
+func setVal(field reflect.Value, src []byte) {
+	switch field.Kind() {
+	case reflect.Int:
+		val := toint(src)
+		field.SetInt(int64(val))
+	case reflect.String:
+		field.SetString(string(src))
+	default:
+		panic("unsupported type")
+	}
+}
+
+// TODO:
+func toint(src []byte) int {
+	val, err := strconv.Atoi(string(src))
+	if err != nil {
+		panic("non integer value.")
+	}
+	return val
 }
